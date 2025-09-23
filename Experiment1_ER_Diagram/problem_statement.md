@@ -27,26 +27,31 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 
 ### Entities and Attributes
 
-| Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+| Entity         | Attributes (PK, FK)                                                         | Notes                                      |
+| -------------- | --------------------------------------------------------------------------- | ------------------------------------------ |
+| **Member**     | PK: Member\_ID<br>Attributes: Name, MembershipType, StartDate               | A member can join multiple programs.       |
+| **Program**    | PK: Trainer\_ID<br>Attributes: Name                                         | A program is conducted by a trainer.       |
+| **Attendance** | PK: Attendance\_ID (in lower table)<br>FKs link to Member, Program, Payment | Tracks member’s participation in sessions. |
+| **Payment**    | PK: Payment\_ID<br>Attributes: MembershipFee, SessionFee                    | Payments are linked to attendance/members. |
 
 ### Relationships and Constraints
 
-| Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+| Relationship                                   | Cardinality                                                | Participation        | Notes                                                             |
+| ---------------------------------------------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------------------- |
+| Member **joins** Program                       | 1\:N (Member to joins), N\:M (joins to Program)            | Total for joins      | A member can join many programs; a program can have many members. |
+| Program **conducts** Attendance                | 1\:M (Program to Attendance), 1\:N (Attendance to Program) | Partial              | Each attendance is conducted by one trainer.                      |
+| Attendance **is booked by** Member             | 1\:N (Member to Attendance)                                | Total for Attendance | Attendance records are tied to members.                           |
+| Attendance **is recorded/tracked for** Payment | 1\:N both sides                                            | Total                | Each payment is linked to attendance tracking.                    |
+
 
 ### Assumptions
-- 
-- 
-- 
+- Each member must join at least one program.
+
+- Each attendance record belongs to exactly one member and one program.
+
+- Payment can cover membership fee or session fee.
+
+- A trainer may conduct multiple programs, but each program is managed by only one trainer.
 
 ---
 
